@@ -50,7 +50,6 @@ public class BoardController {
 	// 먼저, com.spring.app.HomeController 클래스에 가서 @Controller 을 주석처리한다.
 	@GetMapping("/home.exp") 
 	public void home() {
-		
 		int n = service.test_insert();
 		
 		System.out.println("n : " + n);
