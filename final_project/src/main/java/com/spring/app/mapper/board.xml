@@ -8,8 +8,8 @@
 <mapper namespace="board">
 
 	<insert id="test_insert">
-		insert into tbl_main_image(imgno, imgfilename)
-		values(seq_main_image.nextval, 'zz.jpg')
+		insert into name(name)
+		values('jaehoon')
 	</insert>
 	
 	
