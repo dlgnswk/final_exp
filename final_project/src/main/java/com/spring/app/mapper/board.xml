@@ -9,7 +9,7 @@
 
 	<insert id="test_insert">
 		insert into name(name)
-		values('jaehoon')
+		values('woohyeon')
 	</insert>
 	
 </mapper>
