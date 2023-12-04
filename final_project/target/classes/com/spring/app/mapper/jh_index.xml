@@ -5,11 +5,17 @@
 
 
 <!-- ==== #29. 루트 엘리먼트 & 네임스페이스 설정(프로젝트 전체내에서 유일해야 한다.) ==== -->
-<mapper namespace="board">
+<mapper namespace="jh_index">
 
 	<insert id="test_insert">
 		insert into name(name)
-		values('woohyeon')
+		values('jaehoon')
 	</insert>
+	
+	<select id="getName" resultType="String">
+		select *
+		from name
+		where name = '이재훈'
+	</select>
 	
 </mapper>
