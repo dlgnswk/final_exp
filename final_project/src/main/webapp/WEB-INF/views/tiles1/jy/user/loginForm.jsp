@@ -10,7 +10,7 @@
 			<div>
 				<label for="userid">이메일</label>
 				<input type="text" class="input_userid" name="userid" />
-				<input type="hidden" name="email" />				
+				<input type="hidden" name="email" />				0
 			</div>
 			<div>
 				<input type="password" class="input_pw" name="pw" />			
