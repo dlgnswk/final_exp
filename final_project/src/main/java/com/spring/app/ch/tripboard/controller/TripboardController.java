@@ -1,17 +1,15 @@
 package com.spring.app.ch.tripboard.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.app.ch.tripboard.service.TripboardService;
 
-
+@Controller
 public class TripboardController {
 	
-	
-	@Autowired  // Type에 따라 알아서 Bean 을 주입해준다.
-	private TripboardService service;
 
 	
 	// === #36. 메인 페이지 요청 === //
@@ -20,7 +18,7 @@ public class TripboardController {
 	public ModelAndView index(ModelAndView mav) {
 		
 		
-		mav.setViewName("/tripboard/tripboard.tiles1");
+		mav.setViewName("tripboard/tripboard.tiles1");
 		
 		return mav;
 	}
