@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,8 @@ import com.spring.app.common.Sha256;
 import com.spring.app.jy.user.domain.UserVO;
 import com.spring.app.jy.user.service.UserService;
 
+
+@Controller
 public class UserController {
 	
 	@Autowired
@@ -24,8 +27,8 @@ public class UserController {
 	   @GetMapping("/login.exp")
 	   public ModelAndView login(ModelAndView mav) {
 		   
-		   mav.setViewName("login/loginform.tiles1");
-		   //  /WEB-INF/views/tiles1/login/loginform.jsp 파일을 생성한다.
+		   mav.setViewName("jy/user/loginForm.tiles1");
+		   //  /WEB-INF/views/tiles1/jy/login/loginform.jsp 파일을 생성한다.
 		   
 		   return mav;
 	   }
@@ -54,7 +57,7 @@ public class UserController {
 			   mav.addObject("loc",loc);
 			   
 			   mav.setViewName("msg");
-			   // /WEB-INF/views/msg.jsp 파일을 생성한다.
+			   // /WEB-INF/views/msg.jsp 파일을 생성한다
 		   }
 		   
 		   else { // 아이디와 암호가 존재하는 경우
