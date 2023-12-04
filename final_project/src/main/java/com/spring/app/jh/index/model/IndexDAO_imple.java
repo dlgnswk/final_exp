@@ -55,7 +55,7 @@ public class IndexDAO_imple implements IndexDAO {
 
 	@Override
 	public String getName() {
-		String name = sqlsession.selectOne("db_index.getName");
+		String name = sqlsession.selectOne("db_register_lodge.getName");
 		return name;
 	}
 	
