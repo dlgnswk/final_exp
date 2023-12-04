@@ -57,7 +57,7 @@ public class IndexController {
 		String name = service.getName();
 		
 		mav.addObject("name", name);
-		mav.setViewName("/index/index.tiles1");
+		mav.setViewName("jh/index/index.tiles1");
 		
 		return mav;
 	}
@@ -68,7 +68,7 @@ public class IndexController {
 		String name = service.getName();
 		
 		mav.addObject("name", name);
-		mav.setViewName("/index/partner.tiles2");
+		mav.setViewName("jh/index/partner.tiles2");
 		
 		return mav;
 	}
