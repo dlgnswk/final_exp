@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+div.register_body {
+	display: flex;
+	justify-content: space-between;
+}
+
+div.register_body > #fixed_step {
+	width:260px;
+	border:solid 2px black;
+}
+
+div.register_body > #lodge_info {
+	width:1000px;
+	border:solid 2px black;
+}
