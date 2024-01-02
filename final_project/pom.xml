@@ -303,21 +303,21 @@
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml-schemas</artifactId>
-		    <version>4.1.2</version>
+		    <version>4.1.1</version>
 		</dependency>
 				
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi-ooxml</artifactId>
-		    <version>5.2.3</version>
+		    <version>4.1.1</version>
 		</dependency>
 		
 		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
 		<dependency>
 		    <groupId>org.apache.poi</groupId>
 		    <artifactId>poi</artifactId>
-		    <version>5.2.3</version>
+		    <version>4.1.1</version>
 		</dependency>
 		
 		<!-- ===== #12. log4j 관련1 jar 추가하기 ===== -->
@@ -335,7 +335,7 @@
 		</dependency>
 		
 		
-		<!-- === #191. Spring websocket dependency를 에 추가(웹채팅관련1) === -->
+		<!-- === #193. Spring (웹채팅관련1) !websocket! dependency를 에 추가(웹채팅관련1) === -->
 		<dependency>
            <groupId>org.springframework</groupId>
            <artifactId>spring-websocket</artifactId>
@@ -343,7 +343,7 @@
 		</dependency>
 		
 		
-		<!-- === #192. (웹채팅관련2) Gson 은 Java 객체를 JSON 표현식으로 변환할 수 있게 해주는 Java 라이브러리임. 
+		<!-- === #194. (웹채팅관련2) Gson 은 Java 객체를 JSON 표현식으로 변환할 수 있게 해주는 Java 라이브러리임. 
 		         또한 거꾸로 JSON 표현식 형태의 String 을 Java 객체로 변환도 가능하게 해주는 라이브러리임.
 		=== -->
 		<dependency>
