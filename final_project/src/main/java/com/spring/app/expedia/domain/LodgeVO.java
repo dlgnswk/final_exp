@@ -2,9 +2,9 @@ package com.spring.app.expedia.domain;
 
 public class LodgeVO {
 
-	private String lodge_id;			// 숙박시설ID / ex) SIRA0001, WTWQ1234
+	private String lodge_id;			// 숙박시설ID / ex) SIRA0001, WTWQ1234   *---> // 캘린더 대분류 번호
 	private String fk_h_userid;			// 사업자아이디 / 
-	private String lg_name;				// 숙박시설 이름 /
+	private String lg_name;				// 숙박시설 이름 /						   *---> // 캘린더 대분류 명
 	private String lg_en_name;			// 호텔영문명 / sin hotel busan
 	private String lg_postcode;			// 우편번호 / 12345 02134
 	
@@ -67,7 +67,6 @@ public class LodgeVO {
 	private String lg_fa_travel_yn;		// 가족여행 / 0:없음,1:있음 --> 이후 체크박스 선택
 	private String lg_status;			// 시설 승인 상태 / 0:대기, 1:승인, 2:거절
 	// 39
-	
 	
 	
 	

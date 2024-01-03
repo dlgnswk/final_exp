@@ -468,10 +468,12 @@ public class LodgeController {
 		String fk_lodge_id = "JSUN0231";
 		
 		// 시설 이미지를 저장할 경로
-		HttpSession session = mtp_request.getSession();
-		String root = session.getServletContext().getRealPath("/");
-		String path = root + "resources"+File.separator+"images"+File.separator+fk_lodge_id+File.separator+"lodge_image";
+//		HttpSession session = mtp_request.getSession();
+//		String root = session.getServletContext().getRealPath("/");
+//		String path = root + "resources"+File.separator+"images"+File.separator+fk_lodge_id+File.separator+"lodge_image";
 		
+		String root = "C:\\git\\final_exp\\final_project\\src\\main\\webapp\\resources";
+		String path = root +File.separator+"images"+File.separator+fk_lodge_id+File.separator+"lodge_image";
 		
 		System.out.println(path);
 		// C:\NCS\workspace_spring_framework\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\final_project\resources\images\ "JSUN0231" \lodge_image
@@ -946,11 +948,12 @@ public class LodgeController {
 		
 		
 		// 시설 이미지를 저장할 경로
-		HttpSession session = mtp_request.getSession();
-		String root = session.getServletContext().getRealPath("/");
-		String path = root + "resources"+File.separator+"images"+File.separator+fk_lodge_id+File.separator+"room_image";
-		
-	//	System.out.println(path);
+	//	HttpSession session = mtp_request.getSession();
+	//	String root = session.getServletContext().getRealPath("/");
+	//	String path = root + "resources"+File.separator+"images"+File.separator+fk_lodge_id+File.separator+"room_image";
+		String root = "C:\\git\\final_exp\\final_project\\src\\main\\webapp\\resources";
+		String path = root +File.separator+"images"+File.separator+fk_lodge_id+File.separator+"room_image";
+		System.out.println(path);
 		// C:\NCS\workspace_spring_framework\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\final_project\resources\images\JSUN0231\room_image
 		
 		// C:/final_project/src/main/webapp/resources/images
@@ -1072,6 +1075,81 @@ public class LodgeController {
 		// /WEB-INF/views/tiles2/db/register/register_lodge.jsp
 		// /WEB-INF/views/tiles2/{1}/{2}/{3}.jsp
 	}
+	
+	
+	// "X"버튼을 눌러서 이미지를 삭제했다.
+	@ResponseBody
+	@PostMapping(value="/delIdxImg.exp")
+	public String delIdxImg(@RequestParam(required = false) Map<String,String> paraMap,
+							HttpServletRequest request) {
+		
+	//	String fk_rm_seq = paraMap.get("fk_rm_seq");
+		String rm_img_save_name = paraMap.get("rm_img_save_name");
+		String fk_lodge_id = paraMap.get("fk_lodge_id");
+	//	String rm_img_name = paraMap.get("rm_img_name");
+	//	System.out.println(fk_rm_seq + rm_img_save_name + rm_img_name);
+		// rm-47프리미어2.png2024010222343548229689336800.png
+
+		
+		// === DB에서 이미지를 삭제한다. === //
+		int result = service.delIdxImg(paraMap);
+		
+		
+		
+		// === 개발 경로에서 이미지 삭제하기 === ///
+		String root = "C:\\git\\final_exp\\final_project\\src\\main\\webapp\\resources";
+		String path = root +File.separator+"images"+File.separator+fk_lodge_id+File.separator+"room_image";
+		System.out.println(path);
+		// C:\NCS\workspace_spring_framework\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\final_project\resources\images\JSUN0231\room_image
+		
+		// C:/final_project/src/main/webapp/resources/images
+		File dir = new File(path);
+		
+		if(dir.exists()) {
+			// 경로 폴더가 존재한다면
+			File[] folderList = dir.listFiles(); // 폴더의 내용물이 있는지 확인하다.
+			
+			if( folderList.length > 0) {
+			// 경로 폴더안 이미지 파일들이 존재한다면 확인해야 한다.
+				
+				// DB에서 가져온 파일 이름을 저장폴더안에 이미지 파일들과 이름을 비교하여 같은 파일을 삭제한다.
+				for(int i=0; i<folderList.length; i++) {
+					
+					if(folderList[i].getName().equals(rm_img_save_name)) {
+					// 삭제해야할 파일과 이름이 같은 파일은 삭제한다.
+						folderList[i].delete();
+						break;
+					}
+					
+				}// end of for -----------------------------------
+				
+			} // end of if( folderList.length > 0) ------------
+			
+		} // end of if(dir.exists()) -----------
+		
+		
+		
+		JsonArray jsonArr = new JsonArray();
+		/*
+		if(roomImgDataMapList.size() > 0 ) {
+			
+			for(Map<String,String> map :roomImgDataMapList) {
+				JsonObject jsonObj = new JsonObject();
+				
+				jsonObj.addProperty("rm_img_name", map.get("rm_img_name"));
+				jsonObj.addProperty("rm_img_save_name", map.get("rm_img_save_name"));
+				
+				jsonArr.add(jsonObj);
+				
+			} // end of for ---------
+			
+		}// end of if(roomImgDataMapList.size() > 0 ) {
+		*/
+		return new Gson().toJson(jsonArr);
+		// /WEB-INF/views/tiles2/db/register/register_lodge.jsp
+		// /WEB-INF/views/tiles2/{1}/{2}/{3}.jsp
+	}
+	
 	
 	
 }

@@ -64,7 +64,7 @@
 		//	console.log($("input[name='mainImage']").get(0).files[0]);
 			
 			const files = $(this).get(0).files;
-
+			
 			let check = fileCheck(files);
 			const elmt = $(this);
 			
@@ -87,40 +87,6 @@
 		});// end of $("input[name='mainImage']").change(function()
 		
 		
-				
-		// 이미지 삭제 버튼	
-		$(document).on("click", "span.delete", function(){
-			
-			const delIdx = $(this).parent().parent().parent().find("span.delete").index($(this));
-			const removeImg = $(this).parent().parent();
-		//	console.log(delIdx);   0 1 2 3 4 5 ...
-			
-			const infoDiv = $(this).parent().parent().parent().find(".infoDiv");
-			
-		
-			let arrName = $(this).parent().parent().parent();
-		//	console.log("arrName => " + arrName.attr("id"));
-			// arrName => diningImage
-			// arrName => outImage
-			
-			let arrLength;
-			
-			// "x"버튼의 부모의 id를  찾아서 대응 시킨다.
-			if ( arrName.attr("id") == "roomImage") {
-			// let mainImage_arr = []; 	// 6 	메인이미지
-				roomImage_arr.splice(delIdx,1);
-				arrLength = roomImage_arr.length;
-			}
-			
-			if ( arrLength == 0 ) {
-				infoDiv.show();
-			}
-			
-			removeImg.remove(); // 이미지 제거하기
-			
-		}); // end of $(document).on("click", "span.delete", function()
-		
-				
 				
 		// 이미지 전체 삭제 버튼
 		$("button.btnDelete").click(function(){
@@ -212,7 +178,7 @@
 		          	*/
 		          	
 		          	html += 
-		          		"<div class='imageItem'>" +
+		          		"<div class='imageItem exitData'>" +
    		                   	"<img class='__image' src='"+fileReader.result+"' />" + // &times;는 X로 보여주는 것이다.
    		                   	"<div class='imageName'><span class='delete'>&times;</span><span class='fileName'>"+viewFileName+"</span></div>"
 	               		"</div>";
@@ -279,7 +245,7 @@
 	          	*/
 	          	
 	          	html += 
-	          		"<div class='imageItem'>" +
+	          		"<div class='imageItem exitData'>" +
 	                   	"<img class='__image' src='"+fileReader.result+"' />" + // &times;는 X로 보여주는 것이다.
 	                   	"<div class='imageName'><span class='delete'>&times;</span><span class='fileName'>"+viewFileName+"</span></div>"
                		"</div>";
@@ -314,7 +280,7 @@
 			
 		const fk_rm_seq = $("select[name='fk_rm_seq']").val();
 		formData.append("fk_rm_seq", fk_rm_seq);
-	<%--	
+	
 		$.ajax({
             url : "<%= ctxPath%>/rm_image.exp",
             type : "post",
@@ -332,15 +298,17 @@
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
 		      }
         });
-	--%>
+	
 	}); // end of $("button#image_register").click(function()
 	
-			
 	
 	// 객실 이름이 바뀌면 DB에 기존에 등록되어 있는 이미지 파일명을 가져오는 이벤트
 	$(document).on("change","select[name='fk_rm_seq']",function(){
 		
-		roomImage_arr = [];
+		roomImage_arr = []; // 새로운 객실을 위해서 -> 이미지 파일 배열 초기화 
+		let elmt = $("input[name='roomImage']"); 
+		// 새로운 객실을 보여주기 위해 -> 현재 보여주는 객실이미지들 제거
+		elmt.parent().parent().parent().find(".imageItem").remove();
 		
 		$.ajax({
             url : "<%= ctxPath%>/getRmImgData.exp",
@@ -349,89 +317,98 @@
             async: false,
             dataType:"json",
             success:function(json){
-            	let elmt = $("input[name='roomImage']");
-            	elmt.parent().parent().parent().find(".imageItem").remove();
             	
             	$.each(json, function(index, item){
-					console.log(item.rm_img_name +"\n" + item.rm_img_save_name);
+				//	console.log(item.rm_img_name +"\n" + item.rm_img_save_name);
             		
-				//	new File(source배열, name, option객체 : {type: "text/plain"});
-					// File 객체를 생성하는 방법은 크게 2가지 있다. 
-					// 1.생성자 , 2.input엘리먼트를 통해 취득
-					/*
-						source배열 
-						- 파일에 저장할 데이터. ArrayBuffer, ArrayBufferView, Blob, DOMString을 요소로 하는 배열을 입력 (UTF-8)
-						
-						name
-						- 파일명이나 파일의 경로를 나타내는 USVString.
-						
-						option객체:
-						- type: MIME 유형을 나타내는 DOMString. 디폴트는 ""
-						- lastModified: 최종수정일. 디폴트는 Date.now()
-					
-					*/
-					
-					let f = new File([item.rm_img_name],'C:/NCS/workspace_spring_framework/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/wtpwebapps/final_project/resources/images/'+'${requestScope.fk_lodge_id}'+"/"+item.rm_img_save_name, {type: "image/png",type: "image/jpeg"});
-					console.log(f);	
-				//	arrPush(roomImage_arr, file, elmt) console.log(roomImage_arr);
-						
-					roomImage_arr.push(f); //  드롭대상인 박스 안에 첨부파일을 드롭하면 파일들을 담아둘 배열인 file_arr 에 파일들을 저장시키도록 한다.
-		       		const fileName = item.rm_img_name; // 파일명	
-		   			
-		           	const fileReader = new FileReader();
-		           	fileReader.readAsDataURL(f); //  fileReader.result안에 이미지를 저장한다.
-		           	
-		           	let viewFileName = fileName;
-		        //  console.log(fileName);
-		            // 이그제큐티브 스위트 투베드룸1.png
-				//	console.log(fileName.substr(0,fileName.lastIndexOf('.')));
-		            // 이그제큐티브 스위트 투베드룸1
-		        //	console.log(fileName.substr(fileName.lastIndexOf('.')));
-					// .png
-		           	
-		           	const fileFrontName = viewFileName.substr(0,viewFileName.lastIndexOf('.'));
-					const fileTypeName = viewFileName.substr(viewFileName.lastIndexOf('.'));
-		             	// .png
-		             	
-		          	if( fileFrontName.length > 7) {
-		          		console.log(fileFrontName);
-		          		console.log(fileTypeName);
-		          		console.log(fileFrontName.substr(0,6) + "···" + fileTypeName);
-		          		viewFileName = fileFrontName.substr(0,6) + "···" + fileTypeName;
-		          	}
-		           	
-					fileReader.onload = function(){
-						/*
-			              	data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAeAB4AAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAg 
-			              	이러한 형태로 출력되며, img.src 의 값으로 넣어서 사용한다.
-			          	*/
-			          	
-			          	
-			          	console.log("fileReader.result => "+ fileReader.result);
-			          	let html = 
-			          		"<div class='imageItem'>" +
-			                   	"<img class='__image' src='"+fileReader.result+"' />" + // &times;는 X로 보여주는 것이다.
-			                   	"<div class='imageName'><span class='delete'>&times;</span><span class='fileName'>"+viewFileName+"</span></div>"
-		               		"</div>";
-		               		
-		               	elmt.parent().parent().parent().find(".image_drop").append(html);
-		               	// document.getElementById("previewImg").src = fileReader.result;
-		               	elmt.parent().parent().parent().find(".image_drop").scrollLeft(99999999); // 스크롤 끝으로
-		               	elmt.parent().parent().parent().find(".infoDiv").hide();
-					}; // end of fileReader.onload = function() -----------
-					
+					// 'C:/git/final_exp/final_project/src/main/webapp/resources/images/'+'${requestScope.fk_lodge_id}'+"/room_image/"+item.rm_img_save_name
+					let html = "<div class='imageItem'>" +
+		          			      "<img class='__image' src='<%=ctxPath%>/resources/images/"+"${requestScope.fk_lodge_id}"+"/room_image/"+item.rm_img_save_name+"' />" + 
+		                   	      "<div class='imageName'>" +
+		          			        "<span class='delete'>&times;</span>" +
+		          			        "<span class='fileName'>"+item.rm_img_name+"</span>" +
+		          			        "<input type='text' class='rm_img_name' value='"+item.rm_img_name+"' />"+
+		          			      	"<input type='text' class='rm_img_save_name' value='"+item.rm_img_save_name+"' />"+
+		          			      "</div>"+
+	               			   "</div>";					// &times;는 X로 보여주는 것이다.
+	               		
+	               	elmt.parent().parent().parent().find(".image_drop").append(html);
+	               	// document.getElementById("previewImg").src = fileReader.result;
+	               	elmt.parent().parent().parent().find(".infoDiv").hide();
+	               	
             	}); // end of $.each(json, function(index, item)
-            			
-            	console.log(roomImage_arr);
-            	
+				
             },
             error: function(request, status, error){
 				alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
-		      }
+	      	}	
         });
 		
 	}); // end of $(document).on("change","select[name='fk_rm_seq']",function(){
+	
+	
+	// "사진 업로드"설명 보여줄지 결정한다
+	function imageItem() {
+
+		if( $("div.imageItem").length == 0) {
+		// 보여지는 이미지가 없으면 infoDiv를 보여준다.
+			$("div.infoDiv").show();
+		}
+		else {
+		// 보여지는 이미지 있으면 infoDiv를 숨겨준다.
+			$("div.infoDiv").hide();
+		}
+	
+	} // end of function imageItem() {
+
+	
+	// "x"를 눌렀을때 경로와 DB에서 삭제한다.
+	$(document).on("click","span.delete",function(){
+		
+		if( confirm("선택한 이미지를 정말로 삭제하시겠습니까?") ) {
+		
+			if($(this).parent().parent().hasClass("exitData")) {
+			// 이미지 파일 배열에 값이 추가된 이미지를 제거했다.			
+				const deleteIdx = $(this).parent().parent().index(".exitData");
+				roomImage_arr.splice(deleteIdx,1); // 삭제가 발생한 index와 같은 index를 가지는 파일을 배열에서 삭제한다.
+			}
+			else{
+			// DB에서 가져온 이미지라 배열에 추가되어 있지 않다.
+				const rm_img_name = $(this).parent().find("input.rm_img_name").val();
+				const rm_img_save_name = $(this).parent().find("input.rm_img_save_name").val();
+				console.log(rm_img_name, rm_img_save_name);
+				// 해당하는 이미지와 같은 경로의 값을 DB에서 삭제한다.
+				$.ajax({
+		            url : "<%= ctxPath%>/delIdxImg.exp",
+		            type : "post",
+		            data : { "fk_lodge_id":"${requestScope.fk_lodge_id}",
+		            		 "fk_rm_seq":$("select[name='fk_rm_seq']").val(),
+		            		 "rm_img_save_name":rm_img_name,
+		            		 "rm_img_name":rm_img_save_name,
+		            		},
+		            async: false,
+		            dataType:"json",
+		            success:function(json){
+						
+		            },
+		            error: function(request, status, error){
+						alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+			      	}	
+		        }); // end of $.ajax
+				
+			}
+			console.log(roomImage_arr);
 			
+			$(this).parent().parent().remove(); // 사진 지우기
+			
+		}
+		
+		// "사진 업로드"설명 보여줄지 결정한다.
+		imageItem();
+		
+	}); // end of $(document).on("click","span.delete",function(){
+	
+		
 </script>
 
 

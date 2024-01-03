@@ -845,7 +845,7 @@
 		select rm_img_name, rm_img_save_name
 		from tbl_rm_img
 		where fk_rm_seq = #{fk_rm_seq}
-		order by rm_img_main desc
+		order by rm_img_main desc, rm_img_seq asc 
 	</select>
 	
 </mapper>

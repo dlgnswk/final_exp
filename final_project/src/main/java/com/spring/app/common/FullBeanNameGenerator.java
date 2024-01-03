@@ -9,4 +9,6 @@ public class FullBeanNameGenerator implements org.springframework.beans.factory.
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry) {
 		return definition.getBeanClassName(); 
 	}
+	
+	
 }

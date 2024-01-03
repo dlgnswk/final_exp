@@ -1376,6 +1376,9 @@ select *
 from tbl_rm_img
 where fk_rm_seq = 'rm-47'
 
-select rm_img_name, rm_img_save_name
+select rm_img_name, rm_img_save_name, rm_img_main
 from tbl_rm_img
-where rm_img_seq = 'rm-45'
+where fk_rm_seq = 'rm-45'
+order by rm_img_main desc, rm_img_seq 
+
+commit

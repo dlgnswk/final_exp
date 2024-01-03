@@ -293,6 +293,8 @@ public class FileManager {
 	} // end of getImageWidth(String pathname) -----------
 	
 	
+	
+	
 	// == 숙박시설 이미지 등록 == // 
 	public Map<String,String> imageUpload(MultipartFile imageFile, String path) throws Exception {
 		Map<String,String> resultMap = new HashMap<>(); 
