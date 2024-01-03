@@ -94,6 +94,29 @@ hs_err_pid*
 replay_pid*
 
 ##### commit 제외파일 #####
-/final_project/target/
+/final_project/src/main/java/com/spring/app/HomeController.java
+/final_project/src/main/java/com/spring/app/common
+/final_project/src/main/java/com/spring/app/expedia/domain
+/final_project/src/main/java/com/spring/app/interceptor/controller
+
+/final_project/src/main/webapp/resources/bootstrap-4.6.2-dist
+/final_project/src/main/webapp/resources/css/com_expedia.css
+/final_project/src/main/webapp/resources/fullcalendar_5.10.1
+/final_project/src/main/webapp/resources/Highcharts-10.3.3
+/final_project/src/main/webapp/resources/images/tl_transp.gif
+/final_project/src/main/webapp/resources/jquery-ui-1.13.1.custom
+/final_project/src/main/webapp/resources/js/jquery.form.min.js
+/final_project/src/main/webapp/resources/js/jquery-3.7.1.min.js
+/final_project/src/main/webapp/resources/smarteditor
+/final_project/src/main/webapp/resources/SQL
+
+/final_project/src/main/webapp/WEB-INF/spring
+/final_project/src/main/webapp/WEB-INF/tiles
+/final_project/src/main/webapp/WEB-INF/views/msg.jsp
+/final_project/src/main/webapp/WEB-INF/views/paymentGateway.jsp
+/final_project/src/main/webapp/WEB-INF/web.xml
+
+/final_project/target
+/final_project/pom.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse
