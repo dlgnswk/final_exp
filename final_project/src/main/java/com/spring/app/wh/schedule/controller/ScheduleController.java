@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.spring.app.expedia.domain.HostVO;
+import com.spring.app.expedia.domain.ReservationVO;
+import com.spring.app.expedia.domain.RoomVO;
+import com.spring.app.expedia.domain.UserVO;
 import com.spring.app.wh.common.MyUtil;
-import com.spring.app.expedia.domain.MemberVO;
 import com.spring.app.wh.schedule.domain.*;
 import com.spring.app.wh.schedule.service.ScheduleService;
 
@@ -30,94 +33,32 @@ public class ScheduleController {
 	
 	// === 일정관리 시작 페이지 ===
 	@GetMapping("/schedule/scheduleManagement.exp")
-	public ModelAndView showSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
+	public ModelAndView requiredLogin_showSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
 		
-		mav.setViewName("schedule/scheduleManagement.tiles2");
+		mav.setViewName("wh/schedule/scheduleManagement.tiles2");
 
 		return mav;
 	}
 	
-	/*
-	// === 사내 캘린더에 사내캘린더 소분류 추가하기 ===
-	@ResponseBody
-	@PostMapping("/schedule/addComCalendar.action")
-	public String addComCalendar(HttpServletRequest request) throws Throwable {
-		
-		String com_smcatgoname = request.getParameter("com_smcatgoname");
-		String fk_userid = request.getParameter("fk_userid");
-		
-		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("com_smcatgoname",com_smcatgoname);
-		paraMap.put("fk_userid",fk_userid);
-		
-		int n = service.addComCalendar(paraMap);
-				
-		JSONObject jsObj = new JSONObject();
-		jsObj.put("n", n);
-		
-		return jsObj.toString();
-	}
-	
-	
-	// === 내 캘린더에 내캘린더 소분류 추가하기 ===
-	@ResponseBody
-	@PostMapping("/schedule/addMyCalendar.action")
-	public String addMyCalendar(HttpServletRequest request) throws Throwable {
-		
-		String my_smcatgoname = request.getParameter("my_smcatgoname");
-		String fk_userid = request.getParameter("fk_userid");
-		
-		Map<String, String> paraMap = new HashMap<String, String>();
-		paraMap.put("my_smcatgoname",my_smcatgoname);
-		paraMap.put("fk_userid",fk_userid);
-		
-		int n = service.addMyCalendar(paraMap);
-				
-		JSONObject jsObj = new JSONObject();
-		jsObj.put("n", n);
-		
-		return jsObj.toString();
-	}
-	
-	
-	// === 사내 캘린더에서 사내캘린더 소분류  보여주기 ===
-	@ResponseBody
-	@GetMapping(value="/schedule/showCompanyCalendar.action", produces="text/plain;charset=UTF-8")  
-	public String showCompanyCalendar() {
-		
-		List<Calendar_small_category_VO> calendar_small_category_VO_CompanyList = service.showCompanyCalendar();
-		
-		JSONArray jsonArr = new JSONArray();
-		
-		if(calendar_small_category_VO_CompanyList != null) {
-			for(Calendar_small_category_VO smcatevo : calendar_small_category_VO_CompanyList) {
-				JSONObject jsObj = new JSONObject();
-				jsObj.put("smcatgono", smcatevo.getSmcatgono());
-				jsObj.put("smcatgoname", smcatevo.getSmcatgoname());
-				jsonArr.put(jsObj);
-			}
-		}
-		
-		return jsonArr.toString();
-	}
-	
-	
 	// === 내 캘린더에서 내캘린더 소분류  보여주기 ===
+	// === 숙소 캘린더에서 객실등급 소분류 보여주기  ===
 	@ResponseBody
-	@GetMapping(value="/schedule/showMyCalendar.action", produces="text/plain;charset=UTF-8") 
+	@GetMapping(value="/schedule/showMyCalendar.exp", produces="text/plain;charset=UTF-8") 
 	public String showMyCalendar(HttpServletRequest request) {
 		
-		String fk_userid = request.getParameter("fk_userid");
+		String fk_h_userid = request.getParameter("fk_h_userid");
 		
-		List<Calendar_small_category_VO> calendar_small_category_VO_CompanyList = service.showMyCalendar(fk_userid);
+		List<RoomVO> roomList = service.showMyCalendar(fk_h_userid);
 		
 		JSONArray jsonArr = new JSONArray();
 		
-		if(calendar_small_category_VO_CompanyList != null) {
-			for(Calendar_small_category_VO smcatevo : calendar_small_category_VO_CompanyList) {
+		if(roomList != null) {
+			for(RoomVO roomvo : roomList) {
 				JSONObject jsObj = new JSONObject();
-				jsObj.put("smcatgono", smcatevo.getSmcatgono());
-				jsObj.put("smcatgoname", smcatevo.getSmcatgoname());
+				jsObj.put("rm_seq", roomvo.getRm_seq());
+				jsObj.put("rm_type", roomvo.getRm_type());
+				jsObj.put("fk_lodge_id", roomvo.getFk_lodge_id());
+				jsObj.put("fk_h_userid", roomvo.getFk_h_userid());
 				jsonArr.put(jsObj);
 			}
 		}
@@ -127,39 +68,35 @@ public class ScheduleController {
 	
 	
 	// === 풀캘린더에서 날짜 클릭할 때 발생하는 이벤트(일정 등록창으로 넘어간다) ===
-	@PostMapping("/schedule/insertSchedule.action")
-	public ModelAndView insertSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
+	@PostMapping("/schedule/insertSchedule.exp")
+	public ModelAndView requiredLogin_insertSchedule(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) { 
 		
 		// form 에서 받아온 날짜
 		String chooseDate = request.getParameter("chooseDate");
 		
 		mav.addObject("chooseDate", chooseDate);
-		mav.setViewName("schedule/insertSchedule.tiles1");
+		mav.setViewName("wh/schedule/insertSchedule.tiles2");
 		
 		return mav;
 	}
-	*/
-	/*
+	
+	
 	// === 일정 등록시 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아오기 ===
 	@ResponseBody
-	@GetMapping(value="/schedule/selectSmallCategory.action", produces="text/plain;charset=UTF-8") 
+	@GetMapping(value="/schedule/selectSmallCategory.exp", produces="text/plain;charset=UTF-8") 
 	public String selectSmallCategory(HttpServletRequest request) {
 		
-		String fk_lgcatgono = request.getParameter("fk_lgcatgono"); // 캘린더 대분류 번호
-		String fk_userid = request.getParameter("fk_userid");       // 사용자아이디
+		String fk_h_userid = request.getParameter("fk_h_userid");       // 사용자아이디
 		
-		Map<String,String> paraMap = new HashMap<>();
-		paraMap.put("fk_lgcatgono", fk_lgcatgono);
-		paraMap.put("fk_userid", fk_userid);
-		
-		List<Calendar_small_category_VO> small_category_VOList = service.selectSmallCategory(paraMap);
+		List<RoomVO> roomList = service.selectSmallCategory(fk_h_userid);
 			
 		JSONArray jsArr = new JSONArray();
-		if(small_category_VOList != null) {
-			for(Calendar_small_category_VO scvo : small_category_VOList) {
+		if(roomList != null) {
+			for(RoomVO roomvo : roomList) {
 				JSONObject jsObj = new JSONObject();
-				jsObj.put("smcatgono", scvo.getSmcatgono());
-				jsObj.put("smcatgoname", scvo.getSmcatgoname());
+				jsObj.put("rm_seq", roomvo.getRm_seq());
+				jsObj.put("rm_type", roomvo.getRm_type());
+				jsObj.put("rm_price", roomvo.getRm_price());
 				
 				jsArr.put(jsObj);
 			}
@@ -169,69 +106,62 @@ public class ScheduleController {
 	}
 	
 	
-	// === 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기 ===
-	@ResponseBody
-	@RequestMapping(value="/schedule/insertSchedule/searchJoinUserList.action", produces="text/plain;charset=UTF-8")
-	public String searchJoinUserList(HttpServletRequest request) {
-		
-		String joinUserName = request.getParameter("joinUserName");
-		
-		// 사원 명단 불러오기
-		List<MemberVO> joinUserList = service.searchJoinUserList(joinUserName);
-
-		JSONArray jsonArr = new JSONArray();
-		if(joinUserList != null && joinUserList.size() > 0) {
-			for(MemberVO mvo : joinUserList) {
-				JSONObject jsObj = new JSONObject();
-				jsObj.put("userid", mvo.getUserid());
-				jsObj.put("name", mvo.getName());
-				
-				jsonArr.put(jsObj);
-			}
-		}
-		
-		return jsonArr.toString();
-		
-	}
-	*/
-	/*
+	
+	
 	// === 일정 등록하기 ===
-	@PostMapping("/schedule/registerSchedule_end.action")
-	public ModelAndView registerSchedule_end(ModelAndView mav, HttpServletRequest request) throws Throwable {
+	@PostMapping("/schedule/registerSchedule_end.exp")
+	public ModelAndView registerSchedule_end(HttpServletRequest request, HttpServletResponse response, ModelAndView mav) throws Throwable {
 		
 		String startdate= request.getParameter("startdate");
    	//  System.out.println("확인용 startdate => " + startdate);
 	//  확인용 startdate => 20231129140000
    	    
 		String enddate = request.getParameter("enddate");
-		String subject = request.getParameter("subject");
-		String fk_lgcatgono= request.getParameter("fk_lgcatgono");
-		String fk_smcatgono = request.getParameter("fk_smcatgono");
-		String color = request.getParameter("color");
-		String place = request.getParameter("place");
-		String joinuser = request.getParameter("joinuser");
+		String rm_cnt = request.getParameter("rm_cnt");
+		String fk_rm_seq = request.getParameter("fk_rm_seq");
+		String rm_price = request.getParameter("rm_price");
+		String rs_name = request.getParameter("rs_name");
+		String rs_mobile = request.getParameter("rs_mobile");
+		String rs_email = request.getParameter("rs_email");
+		String rs_guest_cnt = request.getParameter("rs_guest_cnt");
+		String rs_payType = request.getParameter("rs_payType");
 		
-     //	System.out.println("확인용 joinuser => " + joinuser);
-	 // 확인용 joinUser_es =>
-	 // 또는 
-	 // 확인용 joinUser_es => 이순신(leess),아이유1(iyou1),설현(seolh) 	
-		
-		String content = request.getParameter("content");
+		String fk_h_userid = request.getParameter("fk_h_userid");
 		String fk_userid = request.getParameter("fk_userid");
+		
+		/*
+		System.out.println("확인용 startdate => "+startdate);
+		System.out.println("확인용 enddate => "+enddate);
+		System.out.println("확인용 rm_cnt => "+rm_cnt);
+		System.out.println("확인용 fk_rm_seq => "+fk_rm_seq);
+		System.out.println("확인용 rm_price => "+rm_price);
+		System.out.println("확인용 rs_name => "+rs_name);
+		System.out.println("확인용 rs_mobile => "+rs_mobile);
+		System.out.println("확인용 rs_email => "+rs_email);
+		System.out.println("확인용 rs_guest_cnt => "+rs_guest_cnt);
+		System.out.println("확인용 rs_payType => "+rs_payType);
+		System.out.println("확인용 fk_h_userid => "+fk_h_userid);
+		System.out.println("확인용 fk_userid => "+fk_userid);
+		*/
+		
+		
+		
 		
 		Map<String,String> paraMap = new HashMap<String, String>();
 		paraMap.put("startdate", startdate);
 		paraMap.put("enddate", enddate);
-		paraMap.put("subject", subject);
-		paraMap.put("fk_lgcatgono",fk_lgcatgono);
-		paraMap.put("fk_smcatgono", fk_smcatgono);
-		paraMap.put("color", color);
-		paraMap.put("place", place);
+		paraMap.put("rm_cnt", rm_cnt);
+		paraMap.put("fk_rm_seq",fk_rm_seq);
+		paraMap.put("rm_price",rm_price);
+		paraMap.put("rs_name", rs_name);
+		paraMap.put("rs_mobile", rs_mobile);
+		paraMap.put("rs_email", rs_email);
+		paraMap.put("rs_guest_cnt", rs_guest_cnt);
+		paraMap.put("rs_payType", rs_payType);
 		
-		paraMap.put("joinuser", joinuser);
-		
-		paraMap.put("content", content);
+		paraMap.put("fk_h_userid", fk_h_userid);
 		paraMap.put("fk_userid", fk_userid);
+		
 		
 		int n = service.registerSchedule_end(paraMap);
 
@@ -242,7 +172,7 @@ public class ScheduleController {
 			mav.addObject("message", "일정 등록에 성공하였습니다.");
 		}
 		
-		mav.addObject("loc", request.getContextPath()+"/schedule/scheduleManagement.action");
+		mav.addObject("loc", request.getContextPath()+"/schedule/scheduleManagement.exp");
 		
 		mav.setViewName("msg");
 		
@@ -254,63 +184,85 @@ public class ScheduleController {
 	
 	// === 모든 캘린더(사내캘린더, 내캘린더, 공유받은캘린더)를 불러오는것 ===
 	@ResponseBody
-	@RequestMapping(value="/schedule/selectSchedule.action", produces="text/plain;charset=UTF-8")
+	@RequestMapping(value="/schedule/selectSchedule.exp", produces="text/plain;charset=UTF-8")
 	public String selectSchedule(HttpServletRequest request) {
 		
 		// 등록된 일정 가져오기
 		
-		String fk_userid = request.getParameter("fk_userid");
-				
-		List<Calendar_schedule_VO> scheduleList = service.selectSchedule(fk_userid);
+		String h_userid = request.getParameter("fk_h_userid");
+		
+		
+		String[] colors = {"red", "orange", "yellow", "green", "blue", "navy", "purple", "black", "pink", "skyblue"};
+		
+		
+		Map<String,String> paraMap = new HashMap<>();
+		paraMap.put("h_userid", h_userid);
+		
+		
+		
+		List<ReservationVO> reservationList = service.selectReservation(paraMap);
 		
 		JSONArray jsArr = new JSONArray();
 		
-		if(scheduleList != null && scheduleList.size() > 0) {
+		if(reservationList != null && reservationList.size() > 0) {
+			int colorIndex = 0;
+			Map<String, String> roomColorMap = new HashMap<>(); // 각 fk_rm_seq 값에 대한 색상을 저장하기 위한 맵
 			
-			for(Calendar_schedule_VO svo : scheduleList) {
+			for(ReservationVO rvo : reservationList) {
 				JSONObject jsObj = new JSONObject();
-				jsObj.put("subject", svo.getSubject());
-				jsObj.put("startdate", svo.getStartdate());
-				jsObj.put("enddate", svo.getEnddate());
-				jsObj.put("color", svo.getColor());
-				jsObj.put("scheduleno", svo.getScheduleno());
-				jsObj.put("fk_lgcatgono", svo.getFk_lgcatgono());
-				jsObj.put("fk_smcatgono", svo.getFk_smcatgono());
-				jsObj.put("fk_userid", svo.getFk_userid());
-				jsObj.put("joinuser", svo.getJoinuser());
+				jsObj.put("rs_seq", rvo.getRs_seq());
+				jsObj.put("fk_userid", rvo.getFk_userid());
+				jsObj.put("fk_h_userid", rvo.getFk_h_userid());
+				jsObj.put("rs_date", rvo.getRs_date());
+				jsObj.put("rs_checkinDate", rvo.getRs_checkinDate());
+				jsObj.put("rs_checkoutDate", rvo.getRs_checkoutDate());
+				jsObj.put("rs_price", rvo.getRs_price());
+				jsObj.put("rs_paytype", rvo.getRs_payType());
+				jsObj.put("rs_guest_cnt", rvo.getRs_guest_cnt());
+				jsObj.put("rs_name", rvo.getRs_name());
+				jsObj.put("rs_mobile", rvo.getRs_mobile());
+				jsObj.put("rs_email", rvo.getRs_email());
+				jsObj.put("fk_rm_seq", rvo.getFk_rm_seq());
+				// jsObj.put("lodge_id", rvo.getLodge_id() );
+
+				if (!roomColorMap.containsKey(rvo.getFk_rm_seq())) { // roomColorMap 맵에 해당하는 fk_rm_seq 값이 이미 포함되어 있는지 여부를 확인하는 조건
+	                roomColorMap.put(rvo.getFk_rm_seq(), colors[colorIndex % colors.length]); // containsKey() 메소드는 맵에 특정 키가 이미 존재하는지를 확인하는 메소드
+	                colorIndex++; // 다음 색상으로 진행
+	            }
+	            
+	            String color = roomColorMap.get(rvo.getFk_rm_seq());
+	            jsObj.put("color", color); // 해당 방 번호에 대한 순환 색깔 설정
 				
 				jsArr.put(jsObj);
+				
+				
+				
 			}// end of for-------------------------------------
 		
 		}
-		
 		return jsArr.toString();
 	}
 	
 	
 	
 	// === 일정상세보기 ===
-	@RequestMapping(value="/schedule/detailSchedule.action")
+	@RequestMapping(value="/schedule/detailSchedule.exp")
 	public ModelAndView detailSchedule(ModelAndView mav, HttpServletRequest request) {
 		
-		String scheduleno = request.getParameter("scheduleno");
+		String rs_seq = request.getParameter("rs_seq");
 		
 		// 검색하고 나서 취소 버튼 클릭했을 때 필요함
 		String listgobackURL_schedule = request.getParameter("listgobackURL_schedule");
 		mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
-
 		
-		// 일정상세보기에서 일정수정하기로 넘어갔을 때 필요함
-		String gobackURL_detailSchedule = MyUtil.getCurrentURL(request);
-		mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
 		
 		try {
-			Integer.parseInt(scheduleno);
-			Map<String,String> map = service.detailSchedule(scheduleno);
+			Integer.parseInt(rs_seq);
+			Map<String,String> map = service.detailSchedule(rs_seq);
 			mav.addObject("map", map);
-			mav.setViewName("schedule/detailSchedule.tiles1");
+			mav.setViewName("wh/schedule/detailSchedule.tiles2");
 		} catch (NumberFormatException e) {
-			mav.setViewName("redirect:/schedule/scheduleManagement.action");
+			mav.setViewName("redirect:wh/schedule/scheduleManagement.exp");
 		}
 		
 		return mav;
@@ -320,12 +272,12 @@ public class ScheduleController {
 	
 	// === 일정삭제하기 ===
 	@ResponseBody
-	@PostMapping("/schedule/deleteSchedule.action")
-	public String deleteSchedule(HttpServletRequest request) throws Throwable {
+	@PostMapping("/schedule/deleteSchedule.exp")
+	public String requiredLogin_deleteSchedule(HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		
-		String scheduleno = request.getParameter("scheduleno");
+		String rs_seq = request.getParameter("rs_seq");
 				
-		int n = service.deleteSchedule(scheduleno);
+		int n = service.deleteSchedule(rs_seq);
 		
 		JSONObject jsObj = new JSONObject();
 		jsObj.put("n", n);
@@ -335,117 +287,13 @@ public class ScheduleController {
 	
 	
 	
-	// === 일정 수정하기 ===
-	@PostMapping("/schedule/editSchedule.action")
-	public ModelAndView editSchedule(ModelAndView mav, HttpServletRequest request) {
-		
-		String scheduleno= request.getParameter("scheduleno");
-   		
-		try {
-			Integer.parseInt(scheduleno);
-			
-			String gobackURL_detailSchedule = request.getParameter("gobackURL_detailSchedule");
-			
-			HttpSession session = request.getSession();
-			MemberVO loginuser = (MemberVO) session.getAttribute("loginuser");
-			
-			Map<String,String> map = service.detailSchedule(scheduleno);
-			
-			if( !loginuser.getUserid().equals( map.get("FK_USERID") ) ) {
-				String message = "다른 사용자가 작성한 일정은 수정이 불가합니다.";
-				String loc = "javascript:history.back()";
-				
-				mav.addObject("message", message);
-				mav.addObject("loc", loc);
-				mav.setViewName("msg");
-			}
-			else {
-				mav.addObject("map", map);
-				mav.addObject("gobackURL_detailSchedule", gobackURL_detailSchedule);
-				
-				mav.setViewName("schedule/editSchedule.tiles1");
-			}
-		} catch (NumberFormatException e) {
-			mav.setViewName("redirect:/schedule/scheduleManagement.action");
-		}
-		
-		return mav;
-		
-	}
 	
 	
 	
-	// === 일정 수정 완료하기 ===
-	@PostMapping("/schedule/editSchedule_end.action")
-	public ModelAndView editSchedule_end(Calendar_schedule_VO svo, HttpServletRequest request, ModelAndView mav) {
-		
-		try {
-			 int n = service.editSchedule_end(svo);
-			 
-			 if(n==1) {
-				 mav.addObject("message", "일정을 수정하였습니다.");
-				 mav.addObject("loc", request.getContextPath()+"/schedule/scheduleManagement.action");
-			 }
-			 else {
-				 mav.addObject("message", "일정 수정에 실패하였습니다.");
-				 mav.addObject("loc", "javascript:history.back()");
-			 }
-			 
-			 mav.setViewName("msg");
-		} catch (Throwable e) {	
-			e.printStackTrace();
-			mav.setViewName("redirect:/schedule/scheduleManagement.action");
-		}
-			
-		return mav;
-	}
-	
-	
-	
-	// === (사내캘린더 또는 내캘린더)속의  소분류 카테고리인 서브캘린더 삭제하기  === 	
-	@ResponseBody
-	@PostMapping("/schedule/deleteSubCalendar.action")
-	public String deleteSubCalendar(HttpServletRequest request) throws Throwable {
-		
-		String smcatgono = request.getParameter("smcatgono");
-				
-		int n = service.deleteSubCalendar(smcatgono);
-		
-		JSONObject jsObj = new JSONObject();
-		jsObj.put("n", n);
-			
-		return jsObj.toString();
-	}
-	
-	
-	
-	// === (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기 === 
-	@ResponseBody
-	@PostMapping("/schedule/editCalendar.action")
-	public String editComCalendar(HttpServletRequest request) throws Throwable {
-		
-		String smcatgono = request.getParameter("smcatgono");
-		String smcatgoname = request.getParameter("smcatgoname");
-		String userid = request.getParameter("userid");
-		String caltype = request.getParameter("caltype");
-		
-		Map<String, String> paraMap = new HashMap<>();
-		paraMap.put("smcatgono", smcatgono);
-		paraMap.put("smcatgoname", smcatgoname);
-		paraMap.put("userid", userid);
-		paraMap.put("caltype", caltype);
-		
-		int n = service.editCalendar(paraMap);
-		
-		JSONObject jsObj = new JSONObject();
-		jsObj.put("n", n);
-			
-		return jsObj.toString();
-	}
 	
 	
 	// === 검색 기능 === //
-	@GetMapping("/schedule/searchSchedule.action")
+	@GetMapping("/schedule/searchSchedule.exp")
 	public ModelAndView searchSchedule(HttpServletRequest request, ModelAndView mav) { 
 		
 		List<Map<String,String>> scheduleList = null;
@@ -454,13 +302,22 @@ public class ScheduleController {
 		String enddate = request.getParameter("enddate");
 		String searchType = request.getParameter("searchType");
 		String searchWord = request.getParameter("searchWord");
-		String fk_userid = request.getParameter("fk_userid");  // 로그인한 사용자id
+		String fk_h_userid = request.getParameter("fk_h_userid");  // 로그인한 사용자id
 		String str_currentShowPageNo = request.getParameter("currentShowPageNo");
 		String str_sizePerPage = request.getParameter("sizePerPage");
 	
-		String fk_lgcatgono = request.getParameter("fk_lgcatgono");
+		String rs_seq = request.getParameter("rs_seq");
 		
-		if(searchType==null || (!"subject".equals(searchType) && !"content".equals(searchType)  && !"joinuser".equals(searchType))) {  
+		
+		// System.out.println("컨트롤러 확인용 startdate : "+startdate);
+		// System.out.println("컨트롤러 확인용 enddate : "+enddate);
+		// System.out.println("컨트롤러 확인용 searchType : "+searchType);
+		// System.out.println("컨트롤러 확인용 searchWord : "+searchWord);
+		// System.out.println("컨트롤러 확인용 fk_h_userid : "+fk_h_userid);
+		// System.out.println("컨트롤러 확인용 rs_seq : "+rs_seq);
+		
+		
+		if(searchType==null ) {  
 			searchType="";
 		}
 		
@@ -481,8 +338,8 @@ public class ScheduleController {
 				str_sizePerPage ="10";
 		}
 		
-		if(fk_lgcatgono == null ) {
-			fk_lgcatgono="";
+		if(rs_seq == null ) {
+			rs_seq="";
 		}
 		
 		Map<String, String> paraMap = new HashMap<String, String>();
@@ -490,10 +347,9 @@ public class ScheduleController {
 		paraMap.put("enddate", enddate);
 		paraMap.put("searchType", searchType);
 		paraMap.put("searchWord", searchWord);
-		paraMap.put("fk_userid", fk_userid);
+		paraMap.put("fk_h_userid", fk_h_userid);
 		paraMap.put("str_sizePerPage", str_sizePerPage);
 
-		paraMap.put("fk_lgcatgono", fk_lgcatgono);
 		
 		int totalCount=0;          // 총 게시물 건수		
 		int currentShowPageNo=0;   // 현재 보여주는 페이지 번호로서, 초기치로는 1페이지로 설정함.
@@ -527,7 +383,10 @@ public class ScheduleController {
 	      
 	    paraMap.put("startRno", String.valueOf(startRno));
 	    paraMap.put("endRno", String.valueOf(endRno));
-	    	   
+	    
+	    // System.out.println("컨트롤러 확인용 startRno : "+startRno);
+	    // System.out.println("컨트롤러 확인용 endRno : "+endRno);
+	    
 	    scheduleList = service.scheduleListSearchWithPaging(paraMap);
 	    // 페이징 처리한 캘린더 가져오기(검색어가 없다라도 날짜범위 검색은 항시 포함된 것임)
 		
@@ -543,12 +402,12 @@ public class ScheduleController {
 	   
 		String pageBar = "<ul style='list-style:none;'>";
 		
-		String url = "searchSchedule.action";
+		String url = "searchSchedule.exp";
 		
 		// === [맨처음][이전] 만들기 ===
 		if(pageNo!=1) {
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_userid="+fk_userid+"&fk_lgcatgono="+fk_lgcatgono+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_userid="+fk_userid+"&fk_lgcatgono="+fk_lgcatgono+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
+			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_h_userid="+fk_h_userid+"&rs_seq="+rs_seq+"&sizePerPage="+sizePerPage+"&currentShowPageNo=1'>[맨처음]</a></li>";
+			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_h_userid="+fk_h_userid+"&rs_seq="+rs_seq+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+(pageNo-1)+"'>[이전]</a></li>";
 		}
 		while(!(loop>blockSize || pageNo>totalPage)) {
 			
@@ -556,7 +415,7 @@ public class ScheduleController {
 				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt; border:solid 1px gray; color:red; padding:2px 4px;'>"+pageNo+"</li>";
 			}
 			else {
-				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_userid="+fk_userid+"&fk_lgcatgono="+fk_lgcatgono+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
+				pageBar += "<li style='display:inline-block; width:30px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_h_userid="+fk_h_userid+"&rs_seq="+rs_seq+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>"+pageNo+"</a></li>";
 			}
 			
 			loop++;
@@ -565,8 +424,8 @@ public class ScheduleController {
 		
 		// === [다음][마지막] 만들기 === //
 		if(pageNo <= totalPage) {
-			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_userid="+fk_userid+"&fk_lgcatgono="+fk_lgcatgono+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
-			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_userid="+fk_userid+"&fk_lgcatgono="+fk_lgcatgono+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
+			pageBar += "<li style='display:inline-block; width:50px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_h_userid="+fk_h_userid+"&rs_seq="+rs_seq+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+pageNo+"'>[다음]</a></li>";
+			pageBar += "<li style='display:inline-block; width:70px; font-size:12pt;'><a href='"+url+"?startdate="+startdate+"&enddate="+enddate+"&searchType="+searchType+"&searchWord="+searchWord+"&fk_h_userid="+fk_h_userid+"&rs_seq="+rs_seq+"&sizePerPage="+sizePerPage+"&currentShowPageNo="+totalPage+"'>[마지막]</a></li>";
 		}
 		pageBar += "</ul>";
 		
@@ -577,10 +436,36 @@ public class ScheduleController {
 		
 		mav.addObject("listgobackURL_schedule",listgobackURL_schedule);
 		mav.addObject("scheduleList", scheduleList);
-		mav.setViewName("schedule/searchSchedule.tiles1");
+		mav.setViewName("wh/schedule/searchSchedule.tiles2");
 
 		return mav;
 	}
 
-	*/
+	
+	
+	
+	
+	
+	// 일정 등록 시 예약자 아이디의 존재여부 확인하기
+	@ResponseBody
+	@GetMapping(value="/schedule/confilctFk_userid.exp", produces="text/plain;charset=UTF-8") 
+	public String confilctFk_userid(HttpServletRequest request) {
+		
+		String fk_userid = request.getParameter("fk_userid");       // 사용자아이디
+		
+		UserVO uservo = service.confilctFk_userid(fk_userid);
+			
+		JSONObject jsObj = new JSONObject();
+		
+		if(uservo != null) {
+			
+			jsObj.put("userid", uservo.getUserid());
+				
+		}
+		
+		return jsObj.toString();
+	}
+	
+	
+	
 }

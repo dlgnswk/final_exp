@@ -8,7 +8,10 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.spring.app.expedia.domain.MemberVO;
+import com.spring.app.expedia.domain.HostVO;
+import com.spring.app.expedia.domain.ReservationVO;
+import com.spring.app.expedia.domain.RoomVO;
+import com.spring.app.expedia.domain.UserVO;
 import com.spring.app.wh.schedule.domain.*;
 
 @Repository
@@ -56,109 +59,86 @@ public class ScheduleDAO_imple implements ScheduleDAO {
 	}
 
 	
+	*/
+	
 	// 내 캘린더에서 내캘린더 소분류  보여주기
 	@Override
-	public List<Calendar_small_category_VO> showMyCalendar(String fk_userid) {
-		List<Calendar_small_category_VO> calendar_small_category_VO_MyList = sqlsession.selectList("schedule.showMyCalendar", fk_userid);  
-		return calendar_small_category_VO_MyList;
+	public List<RoomVO> showMyCalendar(String fk_h_userid) {
+		List<RoomVO> roomList = sqlsession.selectList("wh_schedule.showMyCalendar", fk_h_userid);  
+		return roomList;
 	}
 
+	
 	
 	// 일정 등록시 내캘린더,사내캘린더 선택에 따른 서브캘린더 종류를 알아오기
 	@Override
-	public List<Calendar_small_category_VO> selectSmallCategory(Map<String, String> paraMap) {
-		List<Calendar_small_category_VO> small_category_VOList = sqlsession.selectList("schedule.selectSmallCategory", paraMap);
-		return small_category_VOList;
+	public List<RoomVO> selectSmallCategory(String fk_h_userid) {
+		List<RoomVO> roomList = sqlsession.selectList("wh_schedule.selectSmallCategory", fk_h_userid);
+		return roomList;
 	}
 
 	
-	// 공유자를 찾기 위한 특정글자가 들어간 회원명단 불러오기
-	@Override
-	public List<MemberVO> searchJoinUserList(String joinUserName) {
-		List<MemberVO> joinUserList = sqlsession.selectList("schedule.searchJoinUserList", joinUserName);
-		return joinUserList;
-	}
+	
 
 	
 	// 일정 등록하기
 	@Override
 	public int registerSchedule_end(Map<String, String> paraMap) throws Throwable {
-		int n = sqlsession.insert("schedule.registerSchedule_end", paraMap);
+		int n = sqlsession.insert("wh_schedule.registerSchedule_end", paraMap);
 		return n;
 	}
 
 	
+	
 	// 등록된 일정 가져오기
 	@Override
-	public List<Calendar_schedule_VO> selectSchedule(String fk_userid) {
-		List<Calendar_schedule_VO> scheduleList = sqlsession.selectList("schedule.selectSchedule", fk_userid);
-		return scheduleList;
+	public List<ReservationVO> selectReservation(Map<String,String> paraMap) {
+		List<ReservationVO> reservationList = sqlsession.selectList("wh_schedule.selectReservation", paraMap);
+		return reservationList;
 	}
 
 	
 	// 일정 상세 보기 
 	@Override
-	public Map<String,String> detailSchedule(String scheduleno) {
-		Map<String,String> map = sqlsession.selectOne("schedule.detailSchedule", scheduleno);
+	public Map<String,String> detailSchedule(String rs_seq) {
+		Map<String,String> map = sqlsession.selectOne("wh_schedule.detailSchedule", rs_seq);
 		return map;
 	}
-
+	
 	
 	// 일정삭제하기
 	@Override
-	public int deleteSchedule(String scheduleno) throws Throwable {
-		int n = sqlsession.delete("schedule.deleteSchedule", scheduleno);
+	public int deleteSchedule(String rs_seq) throws Throwable {
+		int n = sqlsession.delete("wh_schedule.deleteSchedule", rs_seq);
 		return n;
 	}
 
 	
-	// 일정수정하기
-	@Override
-	public int editSchedule_end(Calendar_schedule_VO svo) throws Throwable {
-		int n = sqlsession.update("schedule.editSchedule_end", svo);
-		return n;
-	}
 
-	
-	// (사내캘린더 또는 내캘린더)속의  소분류 카테고리인 서브캘린더 삭제하기 
-	@Override
-	public int deleteSubCalendar(String smcatgono) throws Throwable {
-		int n = sqlsession.delete("schedule.deleteSubCalendar", smcatgono);
-		return n;
-	}
 
-	
-	// (사내캘린더 또는 내캘린더)속의 소분류 카테고리인 서브캘린더 수정하기 
+	// 일정 등록 시 예약자 아이디의 존재여부 확인하기
 	@Override
-	public int editCalendar(Map<String, String> paraMap) {
-		int n = sqlsession.update("schedule.editCalendar", paraMap);
-		return n;
+	public UserVO confilctFk_userid(String fk_userid) {
+		UserVO uservo = sqlsession.selectOne("wh_schedule.confilctFk_userid",fk_userid);
+		return uservo;
 	}
-
 	
-	// 수정된 (사내캘린더 또는 내캘린더)속의 소분류 카테고리명이 이미 해당 사용자가 만든 소분류 카테고리명으로 존재하는지 유무 알아오기  
-	@Override
-	public int existsCalendar(Map<String, String> paraMap) {
-		int m = sqlsession.selectOne("schedule.existsCalendar", paraMap);
-		return m;
-	}
-
-	
+	 
 	// 총 일정 검색 건수(totalCount)
 	@Override
 	public int getTotalCount(Map<String, String> paraMap) {
-		int n = sqlsession.selectOne("schedule.getTotalCount", paraMap);
+		int n = sqlsession.selectOne("wh_schedule.getTotalCount", paraMap);
 		return n;
 	}
 
-	
+
 	// 페이징 처리한 캘린더 가져오기(검색어가 없다라도 날짜범위 검색은 항시 포함된 것임)
 	@Override
 	public List<Map<String,String>> scheduleListSearchWithPaging(Map<String, String> paraMap) { 
-		List<Map<String,String>> scheduleList = sqlsession.selectList("schedule.scheduleListSearchWithPaging", paraMap);
+		List<Map<String,String>> scheduleList = sqlsession.selectList("wh_schedule.scheduleListSearchWithPaging", paraMap);
 		return scheduleList;
 	}
 	
-	*/
+
 	
 }
