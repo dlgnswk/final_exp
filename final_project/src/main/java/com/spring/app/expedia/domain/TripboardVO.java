@@ -6,11 +6,11 @@ import org.springframework.web.multipart.MultipartFile;
 // 먼저, 오라클에서 tbl_board 테이블을 생성해야 한다.
 public class TripboardVO {
 
-	private int tb_seq       ;  //     number                not null    -- 글번호
-	private String fk_userid     ;  //    varchar2(20)           not null    -- 사용자ID
+	private String tb_seq       ;  //     number                not null    -- 글번호
+	private String fk_userid     ;  //    varchar2(20)          not null   -- 사용자ID
 	private String tb_name       ;  //    varchar2(20)          not null    -- 글쓴이 
 	private String tb_subject    ;  //    Nvarchar2(200)        not null    -- 글제목
-	private String tb_city       ;  //    varchar2(20)          not null     -- 지역
+	private String tb_city       ;  //    varchar2(20)          not null    -- 지역
 	private String tb_content    ;  //    clob                  not null    -- 글내용   CLOB(4GB 까지 저장 가능한 데이터 타입) 타입
 	private String tb_pw         ;  //    varchar2(20)          not null    -- 글암호
 	private String tb_readCount  ;  //    number default 0      not null    -- 글조회수
@@ -47,7 +47,7 @@ public class TripboardVO {
 
 	public TripboardVO() {}
 	
-	public TripboardVO(int tb_seq, String fk_userid, String tb_name, String tb_subject, String tb_content, String tb_pw,
+	public TripboardVO(String tb_seq, String fk_userid, String tb_name, String tb_subject, String tb_content, String tb_pw,
 			String tb_readCount, String tb_regDate, String tb_status) {
 		this.tb_seq = tb_seq;
 		this.fk_userid = fk_userid;
@@ -60,11 +60,11 @@ public class TripboardVO {
 		this.tb_status = tb_status;
 	}
 
-	public int getTb_seq() {
+	public String getTb_seq() {
 		return tb_seq;
 	}
 
-	public void setTb_seq(int tb_seq) {
+	public void setTb_seq(String tb_seq) {
 		this.tb_seq = tb_seq;
 	}
 
