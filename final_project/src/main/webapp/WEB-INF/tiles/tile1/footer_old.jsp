@@ -6,7 +6,7 @@
 %>
 
 <%-- ======= #27. tile1 중 footer 페이지 만들기  ======= --%>
-<div style="inline-size: 100%; margin: auto; max-inline-size: 85rem;">
+<div style="inline-size: 100%; margin: auto; max-inline-size: 75rem;">
 	
 	
 	<div style="margin: 25px 0;">

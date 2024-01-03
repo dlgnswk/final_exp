@@ -8,11 +8,12 @@
     //      /board
 %>  
 
+<title>Expedia Group</title>
+
 <div style="inline-size: 100%; margin: auto; max-inline-size: 85rem; padding: 50px 0;">
 
 	<div id="select_box">
-		${requestScope.name}
-		<div style="border: 1px solid lightgray; height: 180px; border-radius: 1rem; display: flex; margin-bottom: 25px;">
+		<div style="border: 1px solid lightgray; height: 140px; border-radius: 1rem; display: flex; margin-bottom: 25px;">
 			
 		</div>
 		

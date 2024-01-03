@@ -41,22 +41,89 @@ public class IndexDAO_imple implements IndexDAO {
 	private SqlSessionTemplate sqlsession;
 	
 	
-	
-	// spring_test 테이블에 insert 하기 
+
+	// 큰 도시 검색 결과 갯수
 	@Override
-	public int test_insert() {
+	public int search_lg_area_1(String searchWord) {
 		
-		int n = sqlsession.insert("board.test_insert");
+		// 큰도시 검색
+		int area_1_no = sqlsession.selectOne("jh_index.search_area_1", searchWord);
 		
-		return n;
+		// 큰도시가 검색될 경우 1, 없을경우 0
+		if(area_1_no > 0) {
+			area_1_no = 1;
+		}
+		else {
+			area_1_no = 0;
+		}
+		
+		return area_1_no;
+	}
+	
+	// 상세 도시 검색 결과 갯수
+	@Override
+	public int search_lg_area_2(String searchWord) {
+		
+		// 상세 도시 검색
+		int area_2_no = sqlsession.selectOne("jh_index.search_area_2", searchWord);
+		
+		// 상세 도시가 검색될 경우 1, 없을경우 0
+		if(area_2_no > 0) {
+			area_2_no = 1;
+		}
+		else {
+			area_2_no = 0;
+		}
+		
+		return area_2_no;
 	}
 
 
-
+	// 시설 검색 결과 갯수
 	@Override
-	public String getName() {
-		String name = sqlsession.selectOne("jh_index.getName");
-		return name;
+	public int search_lg_name(String searchWord) {
+		int lg_name_no = sqlsession.selectOne("jh_index.search_lg_name", searchWord);
+		
+		// 시설이 검색될 경우 1, 없을경우 0
+		if(lg_name_no > 0) {
+			lg_name_no = 1;
+		}
+		else {
+			lg_name_no = 0;
+		}
+		
+		return lg_name_no;
+	}
+
+
+	// 큰 도시 검색하기
+	@Override
+	public List<Map<String, String>> search_lg_area_List(String searchWord) {
+		List<Map<String, String>> lg_area_List = sqlsession.selectList("jh_index.search_lg_area_List", searchWord);
+		return lg_area_List;
+	}
+
+
+	// 상세 도시 검색하기
+	@Override
+	public List<Map<String, String>> search_lg_area_2_List(String searchWord) {
+		List<Map<String, String>> lg_area_2_List = sqlsession.selectList("jh_index.search_lg_area_2_List", searchWord);
+		return lg_area_2_List;
+	}
+
+
+	// 시설 검색하기
+	@Override
+	public List<Map<String, String>> search_lg_name_List(String searchWord) {
+		List<Map<String, String>> lg_name_List = sqlsession.selectList("jh_index.search_lg_name_List", searchWord);
+		return lg_name_List;
+	}
+
+	// 검색어를 list 로 받아오기
+	@Override
+	public List<Map<String, String>> getSearchLogList() {
+		List<Map<String, String>> searchLogList = sqlsession.selectList("jh_index.getSearchLogList");
+		return searchLogList;
 	}
 	
 	

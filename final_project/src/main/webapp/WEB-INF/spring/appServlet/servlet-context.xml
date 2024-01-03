@@ -168,5 +168,22 @@
 	<aop:config proxy-target-class="true">
 	  <aop:pointcut id="controllerOperation" expression="execution(public * com.spring.app..*Controller.*(..))" />
     </aop:config>
+    
+    
+    <!-- ======================== #인터셉터관련 시작  ======================== -->
+	<!-- 로그인 여부 체크하는 인터셉터 등록 -->
+	<beans:bean id="loginCheckInterceptor" class="com.spring.app.interceptor.controller.LoginCheckInterceptor" />
+	
+	<mvc:interceptors>
+		
+		<!-- 특정 URL에 대해서만 로그인 여부 체크하는 인터셉터 매핑시키기 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/trip.exp"/>				<!-- 포함되는  url -->
+			<beans:ref bean="loginCheckInterceptor"/>           <!-- 로그인 유무 검사 -->
+		</mvc:interceptor>
+	
+	</mvc:interceptors>
+	<!-- ======================== #인터셉터관련 끝  ======================== -->
+    
 	
 </beans:beans>
