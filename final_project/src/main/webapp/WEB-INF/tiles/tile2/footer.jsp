@@ -7,7 +7,7 @@
 
 <%-- ======= #27. tile1 중 footer 페이지 만들기  ======= --%>
 <div style="background-color: #009;">
-	<div style="inline-size: 100%; margin: auto; max-inline-size: 85rem;">
+	<div style="inline-size: 100%; margin: auto; max-inline-size: 75rem;">
 		
 		<div style="display: flex; margin: 0 auto; justify-content: center; color:white; padding: 1rem; padding-top: 30px;">
 		

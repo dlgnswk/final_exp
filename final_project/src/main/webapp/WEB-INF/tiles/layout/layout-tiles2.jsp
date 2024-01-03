@@ -12,7 +12,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>spring framework 2</title>
+
   <!-- Required meta tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,9 +22,6 @@
  
   <%-- Font Awesome 6 Icons --%>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-  <%-- 직접 만든 CSS 2 --%>
-  <link rel="stylesheet" type="text/css" href="<%= ctxPath%>/resources/css/style2.css" />
 
   <%-- Optional JavaScript --%>
   <script type="text/javascript" src="<%= ctxPath%>/resources/js/jquery-3.7.1.min.js"></script>
