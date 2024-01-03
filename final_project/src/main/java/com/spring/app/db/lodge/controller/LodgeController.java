@@ -1092,7 +1092,7 @@ public class LodgeController {
 
 		
 		// === DB에서 이미지를 삭제한다. === //
-		int result = service.delIdxImg(paraMap);
+	//	int result = service.delIdxImg(paraMap);
 		
 		
 		
